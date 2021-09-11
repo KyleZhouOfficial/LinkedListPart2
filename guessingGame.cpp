@@ -17,6 +17,14 @@ int main(){
     // do while guess is incorrect
     do{
       cin >> input;
+      //tell player too high too low or correct
+      if(input > number){
+	cout << "Too High" << endl;
+      } else if(input < number){
+	cout << "Too Low" << endl;
+      } else{
+	cout << "Correct" << endl;
+      }
       guessCnt++;
     }while(input != number);
     //when guess correct print out guess number
