@@ -1,0 +1,30 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+  bool stillPlay = true;
+  while(stillPlay){
+    srand(time(NULL));
+    int number = rand();
+    number %= 101;
+    int input = 0;
+    int guessCnt = 0;
+    cout << number << endl;
+    do{
+      cin >> input;
+      guessCnt++;
+    }while(input != number);
+    cout << guessCnt << endl;
+    cout << "Play Again?" << endl;
+    char yesNo;
+    cin >> yesNo;
+    if(yesNo == 'y'){
+      stillPlay = true;
+    } else if(yesNo == 'n'){
+      stillPlay = false;
+    }
+  }
+  
+  return 0;
+}
