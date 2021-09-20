@@ -1,0 +1,59 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+
+using namespace std;
+
+
+struct Student{
+  char firstName[80];
+  char lastName[80];
+  int id;
+  float gpa;
+};
+
+void print(vector<Student*> 
+
+
+void add(vector<Student*> &studentList){
+  char first[80];
+  char last[80];
+  int id;
+  float gpa;
+  cout << "Enter first name: " << endl;
+  cin >> first;
+
+  cout << "Enter last name: " <<  endl;
+  cin >> last;
+
+  cout << "Enter id: " << endl;
+  cin >> id;
+
+  cout << "Enter gpa: " << endl;
+  cin >> gpa;
+  
+ 
+  Student *newStudent = new Student();
+  strcpy(newStudent->firstName, first);
+  strcpy(newStudent->lastName, last);
+  newStudent->id = id;
+  newStudent->gpa = gpa;
+  
+  studentList.push_back(newStudent);
+  return;
+}
+
+
+int main(){
+  vector<Student*> studentList;
+  bool keepRunning = true;
+  while(keepRunning){
+    char command[10];
+    cin >> command;
+    if(command[0] == 'A'){
+      add(studentList);
+    }
+    cout << "Done" << endl;
+  }
+  return 0;
+}
