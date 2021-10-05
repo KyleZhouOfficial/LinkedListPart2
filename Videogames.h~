@@ -1,0 +1,21 @@
+#ifndef __Videogames_H__
+#define __Videogames_H__
+#include <cstring>
+#include "Media.h"
+
+using namespace std;
+
+class Videogames: public Media{
+ private:
+  char publisher[80];
+  int rating;
+
+ public:
+  Videogames(char* titleVal, int yearVal, int ratingVal, char* publisherVal);
+  ~Videogames();
+  char* getPublisher();
+  int getRating();
+  virtual int getType();
+};
+
+#endif

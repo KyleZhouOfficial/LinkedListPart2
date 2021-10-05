@@ -1,0 +1,28 @@
+#include "Movies.h"
+#include <cstring>
+
+using namespace std;
+
+Movies::Movies(char titleVal[80], int yearVal, char directorVal[80], int durationVal, int ratingVal): Media(titleVal, yearVal), duration(durationVal), rating(ratingVal){
+    strcpy(director, directorVal);
+}
+
+Movies::~Movies(){
+
+}
+
+ int Movies::getType(){
+  return 1;
+}
+
+char* Movies::getDirector(){
+  return director;
+}
+
+int Movies::getDuration(){
+  return duration;
+}
+
+int Movies::getRating(){
+  return rating;
+}

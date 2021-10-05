@@ -1,0 +1,30 @@
+#include "Music.h"
+#include <cstring>
+
+using namespace std;
+
+
+Music::Music(char titleVal[80], int yearVal, char artistVal[80], int durationVal, char publisherVal[80]): Media(titleVal, yearVal), duration(durationVal){
+    strcpy(publisher,publisherVal);
+    strcpy(artist,artistVal);
+}
+
+int Music::getType(){
+  return 3;
+}
+
+Music::~Music(){
+
+}
+
+char* Music::getArtist(){
+  return artist;
+}
+
+int Music::getDuration(){
+  return duration;
+}
+
+char* Music::getPublisher(){
+  return publisher;
+}

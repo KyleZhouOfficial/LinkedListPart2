@@ -1,0 +1,23 @@
+#ifndef __MUSIC_H__
+#define __MUSIC_H__
+#include "Media.h"
+#include <cstring>
+
+using namespace std;
+
+class Music : public Media{
+ private:
+  char artist[80];
+  int duration;
+  char publisher[80];
+ public:
+  Music(char titleVal[80], int yearVal, char artistVal[80], int durationVal, char publisherVal[80]);
+  ~Music();
+  char* getArtist();
+  int getDuration();
+  char* getPublisher();
+  virtual int getType();
+};
+
+
+#endif

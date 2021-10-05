@@ -1,0 +1,26 @@
+#include "Videogames.h"
+#include <cstring>
+
+
+using namespace std;
+
+Videogames::Videogames(char titleVal[80], int yearVal, int ratingVal, char publisherVal[80]):
+  Media(titleVal, yearVal), rating(ratingVal){
+  strcpy(publisher, publisherVal);
+}
+
+int Videogames::getType(){
+  return 2;
+}
+
+Videogames::~Videogames(){
+
+}
+
+char* Videogames::getPublisher(){
+  return publisher;
+}
+
+int Videogames::getRating(){
+  return rating;
+}
