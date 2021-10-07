@@ -1,0 +1,62 @@
+#include "Room.h"
+#include <cstring>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+Room::Room(char descrip[80]){
+  strcpy(description, descrip);
+}
+
+Room::~Room(){
+
+}
+
+void Room::setExit(char exit[80], Room next){
+  map[exit] = next;
+}
+
+char* Room::getDescrip(){
+  return description;
+}
+
+void Room::getExitString(){
+  cout << "Exits:";
+  for(map<char*, Room>::iterator it = exits.begin(); it != exits.end(); it++){
+    cout << " " << it->first;
+  }
+  cout << endl;
+  cout << "Items in the room:" << endl;
+  cout << getRoomItems() << endl;
+}
+
+Item Room::getItem(char itemName[80]){
+  for(vector<Item>::iterator it = items.begin(); it!= items.end(); it++){
+    if(strcmp(it->getDescription(), itemName) == 0){
+      return (*it);
+    }
+  }
+}
+
+void Room::removeItem(char itemName[80]){
+  for(vector<Item>::iterator it= items.begin(); it!= items.end(); it++){
+    if(strcmp(itemName, it->getDescription()) == 0){
+      items.erase(it);
+      break;
+    }
+  }
+}
+
+void Room::setItem(Item newItem){
+  items.push_back(newItem);
+}
+
+void Room::getRoomItems(){
+  for(vector<Item>::iterator it= items.begin(); it != items.end(); it++){
+    cout << " " << it->getDescription();
+  }
+  cout << endl;
+}

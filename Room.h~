@@ -1,0 +1,31 @@
+#ifndef _ROOM_H_
+#define _ROOM_H_
+#include <cstring>
+#include <map>
+#include <vector>
+
+using namespace std;
+
+class Room{
+ private:
+  map<char dir[80], Room neighbor> exits;
+  vector<Item> items;
+  char description[80];
+  
+ public:
+  Room(char* descrip);
+  ~Room();
+  void setExit(char* exit, Room next);
+  char* getDescrip();
+  char* getExitString();
+  Item getItem(char* itemName);
+  void removeItem(char* itemName);
+  void setItem(Item newItem);
+  char* getRoomItems();
+};
+
+
+
+
+
+#endif
