@@ -1,0 +1,16 @@
+#include "Room.h"
+#include "Item.h"
+#include <map>
+#include <vector>
+#include <cstring>
+#include <iostream>
+
+using namespace std;
+
+int main(){
+  vector<Room*> rooms;
+  rooms.push_back(new Room("outside the main entrance of the university"));
+  
+  
+  return 0;
+}
