@@ -1,3 +1,8 @@
+/*
+Kyle Zhou
+This is my 2 player TicTacToe game
+10/10/21
+ */
 #include <iostream>
 #include <cstring>
 

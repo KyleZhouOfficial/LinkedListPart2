@@ -1,3 +1,8 @@
+/*
+Kyle Zhou
+This project allows you to add delete and print a student database
+10/20/21
+ */
 #include <iostream>
 #include <cstring>
 #include <vector>
