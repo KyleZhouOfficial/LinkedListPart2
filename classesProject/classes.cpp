@@ -64,7 +64,8 @@ void ADD(vector<Media*> &list){
     cin >> publisher;
     cout << "Please enter duration" << endl;
     cin >> duration;
-    Media toAdd = Music(tit, year, artist, duration, publisher);
+    Media* toAdd = new Music(tit, year, artist, duration, publisher);
+    list.push_back(toAdd);
   }
 }
 
@@ -100,7 +101,7 @@ void SEARCH(vector<Media*> list){
     cin >> title;
     //iterate
    for (vector<Media*>::iterator it = list.begin(); it!= list.end(); it++){
-     if((*it)->getTitle() == title){ //if title is same
+     if(strcmp((*it)->getTitle(),title) == 0){ //if title is same
        if((*it)->getType() == 1){ //if is Movie
 	 cout << ((Movies*)(*it))->getTitle() << " " << ((Movies*)(*it))->getYear() << " "
 	      << " " << ((Movies*)(*it))->getDirector() << " " << ((Movies*)(*it))->getDuration() << " " << ((Movies*)(*it))->getRating() << endl;
@@ -168,7 +169,7 @@ void DELETE(vector<Media*> &list){
     cout << "Enter title: " << endl;
     cin >> title;
    for (vector<Media*>::iterator it = list.begin(); it!= list.end(); it++){
-     if((*it)->getTitle() == title){
+     if(strcmp((*it)->getTitle(),title)==0){
        if((*it)->getType() == 1){
 	 cout <<"Delete this Movie? (y/n)" << ((Movies*)(*it))->getTitle() << " " << ((Movies*)(*it))->getYear() << " "
 	      << " " << ((Movies*)(*it))->getDirector() << " " << ((Movies*)(*it))->getDuration() << " " << ((Movies*)(*it))->getRating() << endl;
