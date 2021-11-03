@@ -1,9 +1,15 @@
+/*
+Kyle Zhou
+Implementation for Student class
+11/3/21
+ */
 #include "Student.h"
 #include <cstring>
 #include <iostream>
 
 using namespace std;
 
+//constructors
 Student::Student(){
   
 }
@@ -16,10 +22,12 @@ Student::Student(char first[80], char last[80], int idVal, float gpaVal){
   gpa = gpaVal;
 }
 
+//destructor
 Student::~Student(){
 
 }
 
+//getters
 char* Student::getFirst(){
   return firstName;
 }
@@ -36,6 +44,7 @@ float Student::getGpa(){
   return gpa;
 }
 
+//setters
 void Student::setGpa(float val){
   gpa = val;
 }
