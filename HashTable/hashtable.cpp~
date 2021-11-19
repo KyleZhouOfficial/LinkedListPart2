@@ -1,0 +1,125 @@
+/*
+Kyle Zhou
+This project allows you to add delete and print a student database
+10/20/21
+ */
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+
+//Student struct
+struct Student{
+  
+  char firstName[80];
+  char lastName[80];
+  int id;
+  float gpa;
+};
+
+int hash(Student student, int sz){
+  int result = 0;
+  int pow = 1;
+  for(int i = 0; i < strlen(student.firstName); i++){
+    result += student.firstName[i] * pow;
+    pow++;
+  }
+  for(int i = 0; i < strlen(student.lastName); i++){
+    result += student.lastName[i] * pow;
+    pow++;
+  }
+  result += id * 3;
+  result += gpa + 17;
+  return result % sz;
+}
+
+//print
+void print(vector<Student*> studentList)
+{
+  //iterate through the vector
+  for(vector<Student*>::iterator it = studentList.begin(); it != studentList.end(); it++){
+    //print out the current students fields
+    cout <<(*it)->firstName << " " << (*it)->lastName << ", " << (*it)->id << ", " << fixed << setprecision(2)<< (*it)->gpa << endl;
+  }
+}
+
+//add
+void add(vector<Student*> &studentList){
+  //input fields
+  char first[80];
+  char last[80];
+  int id;
+  float gpa;
+  //ask for user input
+  cout << "Enter first name: " << endl;
+  cin >> first;
+
+  cout << "Enter last name: " <<  endl;
+  cin >> last;
+
+  cout << "Enter id: " << endl;
+  cin >> id;
+
+  cout << "Enter gpa: " << endl;
+  cin >> gpa;
+  
+  //create new student pointer with the input fields
+  Student *newStudent = new Student();
+  strcpy(newStudent->firstName, first);
+  strcpy(newStudent->lastName, last);
+  newStudent->id = id;
+  newStudent->gpa = gpa;
+  //add to vector
+  studentList.push_back(newStudent);
+  return;
+}
+
+//delete
+void del(vector<Student*> &studentList){
+  //ask which id to delete
+  cout << "What id would you like to delete?" << endl;
+  int idToDelete;
+  cin >> idToDelete;
+  //iterate through the vector
+  for(vector<Student*>::iterator it = studentList.begin(); it != studentList.end(); it++){
+    //if id is the one to delete then erase it from vector
+    if((*it)->id == idToDelete){
+      studentList.erase(it);
+      return;
+    }
+  }
+}
+
+
+int main(){
+  Student** studentList;
+  studentList = new Student*[133];
+  //keep running program?
+  bool keepRunning = true;
+  while(keepRunning){
+    cout << "Please Enter a Command" << endl;
+    char command[10];
+    cin >> command;
+    //if is add
+    if(command[0] == 'A'|| command[0] == 'a'){
+      add(studentList);
+    }
+    //if print
+    if(command[0] == 'P'||command[0] == 'p'){
+      print(studentList);
+    }
+    //if quit
+    if(command[0] == 'Q' || command[0] == 'q'){
+      keepRunning = false;
+    }
+    //if delete
+    if(command[0] == 'D' || command[0] == 'd'){
+      del(studentList);
+    }			       
+   
+  }
+  return 0;
+}
