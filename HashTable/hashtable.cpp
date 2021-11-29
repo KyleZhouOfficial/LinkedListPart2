@@ -30,14 +30,12 @@ int hashFunc(char firstName[80], char lastName[80], int id, float gpa, int sz){
 void add(Student* &head, char first[80], char last[80], int idVal, int gpaVal){
   //if the head is null then new node is now the head
   if(head == NULL){
-    Student* temp = new Student(first, last, idVal, gpaVal);
-    head = temp;
+    head = new Student(first, last, idVal, gpaVal);
     return;
   }
   //if the next node is null then set the next node to the new
   if(head->getNext() == NULL){
-    Student* temp = new Student(first, last, idVal, gpaVal);
-    head->setNext(temp);
+    head->setNext(new Student(first, last, idVal, gpaVal));
     return;
   }
   //call add on next node
@@ -45,6 +43,15 @@ void add(Student* &head, char first[80], char last[80], int idVal, int gpaVal){
   add(temp, first, last, idVal, gpaVal);
  
 }
+
+//rehash function
+void rehash(Student* head, Student** &temp, int sz){
+  if(head != NULL){
+    add(temp[hashFunc(head->getFirst(), head->getLast(), head->getId(), head->getGpa(), sz)], head->getFirst(), head->getLast(), head->getId(), head->getGpa()); 
+    rehash(head->getNext(), temp, sz);
+  }
+}
+
 
 //print function
 void print(Student* next, Student* head){
@@ -55,6 +62,16 @@ void print(Student* next, Student* head){
     print(next->getNext(), head);
   }
 }
+
+//check how many collisions
+int check(Student* next, int& count){
+  //when next is head then it is the beginning of list
+  if(next != NULL){ //if the node is not NULL then print out its fields
+    count++;
+    check(next->getNext(), count);
+  }
+}
+
 
 //delete
 void del(Student* curr,Student* &head, int id, Student* prev){
@@ -84,9 +101,8 @@ int main(){
   Student** studentList;
   studentList = new Student*[hashSize];
 
-  for(int i = 0; i < 133; i++){
-    Student* head = NULL;
-    studentList[i] = head;
+  for(int i = 0; i < hashSize; i++){
+    studentList[i] = NULL;
   }
   //studentList
   //keep running program?
@@ -112,12 +128,42 @@ int main(){
       cin >> id;
       cout << "Enter gpa: " << endl;
       cin >> gpa;
-      Student* head = studentList[hashFunc(first, last, id, gpa, hashSize)];
-      add(head, first, last, id, gpa);
+      add(studentList[hashFunc(first, last, id, gpa, hashSize)], first, last, id, gpa);
+
+      for(int i = 0; i < hashSize; i++){
+	int temp = 0;
+	check(studentList[i], temp);
+	if(temp > 1){
+	  cout << "here" << endl;
+	  hashSize *= 2;
+	  Student** temp;
+	  temp = new Student*[hashSize];
+	  for(int i = 0; i < hashSize; i++){
+	    temp[i] = NULL;
+	  }
+
+	  for(int i = 0; i < hashSize/2; i++){
+	    rehash(studentList[i], temp, hashSize);
+	  }
+
+	  for(int i = 0; i < hashSize/2; i++){
+	    delete studentList[i];
+	  }
+
+	  studentList = temp;
+
+	  delete [] temp;
+	  cout << hashSize << endl;
+	  break;
+	}
+      }
+     
     }
     //if print
     if(strcmp(command, "PRINT") == 0){
-      print(head, head);
+      for(int i = 0; i < hashSize; i++){
+	print(studentList[i], studentList[i]);
+      }
       cout << endl;
     }
     //if quit
@@ -129,9 +175,17 @@ int main(){
       int id;
       cout << "Enter id to delete: " << endl;
       cin >> id;
-      del(head,head,id, NULL);
+      for(int i = 0; i < hashSize; i++){
+	del(studentList[i],studentList[i],id, NULL);
+      }
     }
    
   }
+
+  for(int i =0; i < hashSize; i++){
+    delete studentList[i];
+  }
+  delete [] studentList;
+  
   return 0;
 }

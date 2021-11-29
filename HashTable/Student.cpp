@@ -14,8 +14,8 @@ Student::Student(){
   
 }
 
-Student::Student(char first[80], char last[80], int idVal, float gpaVal, Student* s){
-  s = NULL;
+Student::Student(char first[80], char last[80], int idVal, float gpaVal){
+  next = NULL;
   strcpy(firstName, first);
   strcpy(lastName, last);
   id = idVal;
@@ -27,7 +27,7 @@ Student::~Student(){
   next = NULL;
 }
 
-Student* Student::getNext(Student* s){
+Student* Student::getNext(){
   return next;
 }
 

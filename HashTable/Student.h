@@ -25,7 +25,7 @@ class Student{
  public:
   //constructors and destructors
   Student();
-  Student(char first[80], char last[80], int idVal, float gpaVal, Student* s);
+  Student(char first[80], char last[80], int idVal, float gpaVal);
   ~Student();
   //getters and setters
   Student* getNext();
