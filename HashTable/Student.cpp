@@ -1,7 +1,7 @@
 /*
 Kyle Zhou
 Implementation for Student class
-11/3/21
+12/1/21
  */
 #include "Student.h"
 #include <cstring>
