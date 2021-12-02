@@ -217,7 +217,7 @@ int main(){
 
 	  //free pointers in studentList
 	  for(int i = 0; i < hashSize/2; i++){
-	    delete studentList[i];
+	    delete [] studentList[i];
 	  }
 	  //set studentList to temp
 	  studentList = temp;
@@ -253,7 +253,7 @@ int main(){
   }
   //delete studentList
   for(int i =0; i < hashSize; i++){
-    delete studentList[i];
+    delete [] studentList[i];
   }
   delete [] studentList;
   
