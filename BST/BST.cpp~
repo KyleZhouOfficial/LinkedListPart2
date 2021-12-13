@@ -1,0 +1,43 @@
+#include <iostream>
+#include "Node.h"
+
+using namespace std;
+
+bool get(Node* root, int find){
+  Node* x = root;
+  while(x != NULL){
+    if(x->getData() < find) x = x->getRight();
+    if(x->getData() > find) x = x->getLeft();
+    if(x->getData() == find) return true;
+  }
+  return false;
+}
+
+Node* insert(Node* curr, int data){
+  if(curr == NULL) return new Node(data);
+  if(curr->getData() < data) x->getRight() = insert(x->getRight(), data);
+  if(curr->getData() >= data) x->getLeft() = insert(x->getLeft(), data);
+  return x;
+}
+
+void dfs(Node* curr, int depth){
+  if(curr == NULL) return;
+
+  dfs(curr->getRight(), depth+1);
+  for(int i = 0; i < depth; i++) cout << " ";
+  cout << curr->getData() << endl;
+  dfs(curr->getLeft(), depth+1);
+}
+
+
+
+int main(){
+  cout << "To read input from user type USER or FILE for file input" << endl;
+  char input[10];
+  cin >> input;
+  if(strcmp(input, "USER")){
+
+  } else if(strcmp(input, "FILE")){
+
+  }
+}
