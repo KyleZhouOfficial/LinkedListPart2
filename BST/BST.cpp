@@ -14,7 +14,7 @@ bool get(Node* root, int find){
   return false;
 }
 
-Node* insert(Node* &curr, int data){
+Node* insert(Node* curr, int data){
   //if reach null link then insert 
   if(curr == NULL) return new Node(data);
   //if the current node is less than data then go right
@@ -22,7 +22,7 @@ Node* insert(Node* &curr, int data){
   //go left
   if(curr->getData() >= data) curr->setLeft(insert(curr->getLeft(), data));
   //return current node to reset links
-  return x;
+  return curr;
 }
 
 //print 
@@ -40,11 +40,11 @@ void dfs(Node* curr, int depth){
 }
 
 //delete minimum
-Node* deleteMin(Node* &curr){
+Node* deleteMin(Node* curr){
   //if left link is null then delete current node and reset link
   if(curr->getLeft() == NULL){
     delete curr;
-    return curr->getRigh();
+    return curr->getRight();
   }
   //reset links
   curr->setLeft(deleteMin(curr->getLeft()));
@@ -63,12 +63,12 @@ Node* min(Node* curr){
 }
 
 //delete function
-Node* delete(Node* &curr, int data){
+Node* deleteNode(Node* curr, int data){
   // if cant find node then return null
   if(curr == NULL) return NULL;
   // traverse tree
-  if(curr->getData() < data) curr->setRight(delete(curr->getRight(), data));
-  else if(curr->getData() >= data) curr->setLeft(delete(curr->getLeft(), data));
+  if(curr->getData() < data) curr->setRight(deleteNode(curr->getRight(), data));
+  else if(curr->getData() > data) curr->setLeft(deleteNode(curr->getLeft(), data));
   //if found node to delete
   else{
     //if right is null then reset link with left
@@ -82,9 +82,9 @@ Node* delete(Node* &curr, int data){
     //set curr to minimum node in right subtree
     Node* curr = new Node(min(curr->getRight())->getData());
     //set the right to right subtree after deleting the minimum
-    curr->setRight(deleteMin(t.right));
+    curr->setRight(deleteMin(t->getRight()));
     //set the left to original nodes left
-    curr-setLeft(t->getLeft());
+    curr->setLeft(t->getLeft());
     delete t;
   }
   return curr;
@@ -93,10 +93,37 @@ Node* delete(Node* &curr, int data){
 int main(){
   cout << "To read input from user type USER or FILE for file input" << endl;
   char input[10];
+  Node* head = NULL;
   cin >> input;
-  if(strcmp(input, "USER")){
-    
-  } else if(strcmp(input, "FILE")){
-
+  if(strcmp(input, "USER") == 0){
+    while(true) {
+      cout << "Enter INSERT, DELETE, PRINT, QUIT, or SEARCH" << endl;
+      char command[10];
+      cin >> command;
+      if(strcmp(command, "INSERT") == 0){
+	cout << "Please enter a number" << endl;
+	int data;
+	cin >> data;
+	head = insert(head, data);
+      } else if(strcmp(command, "DELETE") == 0){
+	cout << "Please enter a number" << endl;
+	int data;
+	cin >> data;
+	head = deleteNode(head, data);
+      } else if(strcmp(command, "PRINT") == 0){
+	int depth = 0;
+	dfs(head, depth);
+      } else if(strcmp(command, "SEARCH" ) == 0){
+	  cout << "Please enter a number" << endl;
+	  int data;
+	  cin >> data;
+	  if(get(head, data)) cout << data << " is in the tree" << endl;
+	} else{
+	  break;
+	}
+		    
+	
+       
+    }
   }
 }

@@ -17,6 +17,8 @@ class Node{
   void setData(int val);
   void setLeft(int val);
   void setRight(int val);
+  void setRight(Node* val);
+  void setLeft(Node* val);
   int getData();
   Node* getRight();
   Node* getLeft();

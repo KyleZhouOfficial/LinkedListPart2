@@ -3,14 +3,14 @@
 using namespace std;
 
 Node::Node(){
-  left = nullptr;
-  right = nullptr;
+  left = NULL;
+  right = NULL;
 }
 
 Node::Node(int val){
   data = val;
-  left = nullptr;
-  right = nullptr;
+  left = NULL;
+  right = NULL;
 }
 
 Node::~Node(){
@@ -28,6 +28,14 @@ void Node::setLeft(int val){
 
 void Node::setRight(int val){
   right = new Node(val);
+}
+
+void Node::setRight(Node* val){
+  right = val;
+}
+
+void Node::setLeft(Node* val){
+  left = val;
 }
 
 int Node::getData(){
