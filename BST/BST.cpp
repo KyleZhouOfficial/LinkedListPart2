@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Node.h"
+#include <fstream>
 
 using namespace std;
 
@@ -8,8 +9,8 @@ bool get(Node* root, int find){
   Node* x = root;
   while(x != NULL){
     if(x->getData() < find) x = x->getRight();
-    if(x->getData() > find) x = x->getLeft();
-    if(x->getData() == find) return true;
+    else if(x->getData() > find) x = x->getLeft();
+    else  return true;
   }
   return false;
 }
@@ -91,39 +92,54 @@ Node* deleteNode(Node* curr, int data){
 }
 
 int main(){
+  
   cout << "To read input from user type USER or FILE for file input" << endl;
   char input[10];
+  //head pointer
   Node* head = NULL;
   cin >> input;
-  if(strcmp(input, "USER") == 0){
-    while(true) {
-      cout << "Enter INSERT, DELETE, PRINT, QUIT, or SEARCH" << endl;
-      char command[10];
-      cin >> command;
-      if(strcmp(command, "INSERT") == 0){
-	cout << "Please enter a number" << endl;
-	int data;
-	cin >> data;
-	head = insert(head, data);
-      } else if(strcmp(command, "DELETE") == 0){
-	cout << "Please enter a number" << endl;
-	int data;
-	cin >> data;
-	head = deleteNode(head, data);
-      } else if(strcmp(command, "PRINT") == 0){
-	int depth = 0;
-	dfs(head, depth);
-      } else if(strcmp(command, "SEARCH" ) == 0){
-	  cout << "Please enter a number" << endl;
-	  int data;
-	  cin >> data;
-	  if(get(head, data)) cout << data << " is in the tree" << endl;
-	} else{
-	  break;
-	}
-		    
-	
-       
+  //if is file input
+  if(strcmp(input, "FILE") == 0){
+    //open file
+    ifstream myfile("num.txt");
+    //read until end of file
+    int num;
+    while(myfile >> num){
+      head = insert(head, num);
     }
+    myfile.close();
+  }
+  
+  while(true) {
+    cout << "Enter INSERT, DELETE, PRINT, QUIT, or SEARCH" << endl;
+    char command[10];
+    cin >> command;
+    //insert
+    if(strcmp(command, "INSERT") == 0){
+      cout << "Please enter a number" << endl;
+      int data;
+      cin >> data;
+      head = insert(head, data);
+      //delete
+    } else if(strcmp(command, "DELETE") == 0){
+      cout << "Please enter a number" << endl;
+      int data;
+      cin >> data;
+      head = deleteNode(head, data);
+      //print
+    } else if(strcmp(command, "PRINT") == 0){
+      int depth = 0;
+      dfs(head, depth);
+      //search
+    } else if(strcmp(command, "SEARCH" ) == 0){
+      cout << "Please enter a number" << endl;
+      int data;
+      cin >> data;
+      if(get(head, data)) cout << data << " is in the tree" << endl;
+      else  cout << data << " is NOT in the tree" << endl;
+    } else{
+      break; //quit
+    }
+    
   }
 }

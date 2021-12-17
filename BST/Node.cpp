@@ -1,7 +1,13 @@
+/*
+By: Kyle Z
+12/17/21
+This is the implementation for the Node class
+ */
 #include "Node.h"
 #include <iostream>
 using namespace std;
 
+//constructors and destructors
 Node::Node(){
   left = NULL;
   right = NULL;
@@ -18,6 +24,7 @@ Node::~Node(){
   right = nullptr;
 }
 
+//getters and setters
 void Node::setData(int val){
   data = val;
 }
