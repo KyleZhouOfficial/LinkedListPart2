@@ -1,0 +1,36 @@
+/*
+By: Kyle Zhou
+12/17/21
+This program declares the node class
+ */
+#ifndef _BSTNODE_H_
+#define _BSTNODE_H_
+
+
+using namespace std;
+
+
+class BSTNode{
+  //left and right nodes
+ private:
+  BSTNode* left;
+  BSTNode* right;
+  //data value
+  int data;
+ public:
+  //constuctors and destructors
+  BSTNode();
+  BSTNode(int val);
+  ~BSTNode();
+  //setters and getters
+  void setData(int val);
+  void setLeft(int val);
+  void setRight(int val);
+  void setRight(BSTNode* val);
+  void setLeft(BSTNode* val);
+  int getData();
+  BSTNode* getRight();
+  BSTNode* getLeft();
+};
+
+#endif

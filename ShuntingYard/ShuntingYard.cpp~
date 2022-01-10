@@ -1,0 +1,152 @@
+#include <iostream>
+#include <"BSTNode.h">
+
+using namespace std;
+
+
+class StackNode{
+public:
+  StackNode* next;
+  BSTNode* curr;
+  StackNode(BSTNode* temp);
+};
+
+StackNode::StackNode(BSTNode* temp){
+  curr = temp;
+  next = NULL;
+}
+
+
+
+//stack functions
+void push(BSTNode* topush, StackNode* &top){
+  if(top == null){
+    top = new StackNode(topush);
+  } else{
+    StackNode* ptr = new StackNode(topush);
+    ptr->next = top;
+    top = ptr;
+  }
+}
+
+BSTNode* peek(StackNode* top){
+  if(top != NULL) return top->curr;
+  return NULL;
+}
+
+BSTNode* pop(StackNode* &top){
+  if(top == NULL) return NULL;
+
+  BSTNode* temp = top->curr;
+  top = top->next;
+  return temp;
+}
+
+
+//queue functions
+void enqueue(char a, BSTNode* &top, BSTNode* &rear){
+  BSTNode* temp = new BSTNode(a);
+  if(rear == NULL){
+    front = rear = temp;
+    return;
+  }
+
+  rear->setRight(temp);
+  rear = temp;
+}
+
+void dequeue(){
+  if(front == NULL){
+    return NULL;
+  }
+
+  BSTNode* temp = front;
+
+  front = front->getRight();
+
+  if(front == NULL){
+    rear = NULL;
+  }
+  delete temp;
+}
+
+void insert(char val){
+  
+}
+
+bool isOperator(char val){
+  if(val == '*' || val == '/' || val == '+' || val == '-') return true;
+  return false;
+}
+
+bool isDigit(char val){
+  if(val >= '0' && val <= '9'){
+    return true;
+  }
+  return false;
+}
+
+
+
+int apply(char a, char b, char op){
+  a -= '0';
+  b -= '0';
+  if(op == '+'){
+    return a + b;
+  } else if(op == '-'){
+    return a - b;
+  } else if(op == '*'){
+    return a * b;
+  } else if(op == '/'){
+    return a / b;
+  } else {
+    return (int)pow(a, b);
+  }
+}
+    
+  
+
+
+int main(){
+
+  map<char, int> prec;
+  prec['^'] = 4;
+  prec['x'] = 3;
+  prec['/'] = 3;
+  prec['+'] = 2;
+  prec['-'] = 2;
+
+  
+  BSTNode* stackTop = NULL;
+  BSTNode* valueStack = NULL;
+  char temp;
+  char arr[100];
+  int ind = 0;
+  
+
+  
+  while(cin >> temp){
+    if(isDigit(temp)){
+      push(temp, valueStack);
+    } else if(isOperator(temp)){
+      while(peek(stackTop) != NULL && (prec[peek(stackTop)] > prec[temp] || prec[peek(stackTop)] == prec[temp] && temp != '^')){
+	 BSTNode* op = pop(stackTop);
+      }
+      push(temp, stackTop);
+     
+    }else if(temp == '('){
+      push(new BSTNode(temp), stackTop);
+    } else if(temp == ')'){
+       while(peek(stackTop) != NULL && peek(stackTop) != '('){
+	 BSTNode* op = pop(stackTop);
+	 
+	
+	}
+     
+    }
+
+  }
+  
+
+
+}
