@@ -79,7 +79,7 @@ void dequeue(BSTNode* &top, BSTNode* &rear){
 }
 
 bool isOperator(char val){
-  if(val == '*' || val == '/' || val == '+' || val == '-') return true;
+  if(val == '*' || val == '/' || val == '+' || val == '-' || val == '^') return true;
   return false;
 }
 
@@ -107,7 +107,23 @@ int apply(char a, char b, char op){
     return (int)pow(a, b);
   }
 }
-    
+
+
+void print(StackNode* top){
+  while(top != NULL) {
+    cout << (top->curr)->getData() << " ";
+    top = top->next;
+  }
+  cout << endl;
+}
+
+void print(BSTNode* top){
+  while(top != NULL) {
+    cout << top->getData() << " ";
+    top = top->getRight();
+  }
+  cout << endl;
+}
   
 
 
@@ -115,7 +131,7 @@ int main(){
 
   map<char, int> prec;
   prec['^'] = 4;
-  prec['x'] = 3;
+  prec['*'] = 3;
   prec['/'] = 3;
   prec['+'] = 2;
   prec['-'] = 2;
@@ -133,25 +149,17 @@ int main(){
 
   
   for(int i = 0; i < strlen(arr); i++){
+    print(outTop);
+    print(stackTop);
+    
+    
     temp = arr[i];
     if(isDigit(temp)){
       enqueue(new BSTNode(temp), outTop, outRear);
-      cout << "digit" << endl;
     }
-
-    else if(isOperator(temp)){
-      while(peek(stackTop) != NULL && (prec[peek(stackTop)->getData()] > prec[temp] || prec[peek(stackTop)->getData()] == prec[temp] && temp != '^')){
-	 BSTNode* op = pop(stackTop);
-      }
+     else if(temp == '('){
       push(new BSTNode(temp), stackTop);
-      cout << "operator" << endl;
-     
-    }
-
-    else if(temp == '('){
-      push(new BSTNode(temp), stackTop);
-    }
-
+    }    
     else if(temp == ')'){
       while(peek(stackTop) != NULL && peek(stackTop)->getData() != '('){
 	 BSTNode* op = pop(stackTop);
@@ -159,6 +167,27 @@ int main(){
 	}
        pop(stackTop);
     }
+
+    else if(isOperator(temp) && (peek(stackTop) == NULL || peek(stackTop)->getData() == '(')){
+	push(new BSTNode(temp), stackTop);  
+    }
+
+   
+    else if(isOperator(temp) && prec[temp] >= prec[peek(stackTop)->getData()] && temp == '^'){
+       push(new BSTNode(temp), stackTop);
+    }
+
+    else if(isOperator(temp)){
+      cout << temp << " " << peek(stackTop)->getData() << endl;
+      while(peek(stackTop) != NULL && prec[temp] <= prec[(peek(stackTop)->getData())] && temp != '^'){
+	cout << "here" << endl;
+	BSTNode* op = pop(stackTop);
+	enqueue(op, outTop, outRear);
+      }
+       push(new BSTNode(temp), stackTop);
+    }
+
+    
   }
 
    while(stackTop != NULL){
