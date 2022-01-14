@@ -1,3 +1,8 @@
+/*
+By: Kyle Z
+1/14/21
+Implementation for expression tree node
+ */
 #include "BSTNode.h"
 #include <iostream>
 using namespace std;
