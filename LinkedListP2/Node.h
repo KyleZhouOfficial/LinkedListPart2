@@ -1,31 +1,23 @@
 /*
-Kyle Zhou
-10/26/21
-Definition for Node Class
+ * Node
  */
-
-//header guards
-#ifndef _NODE_H_
-#define _NODE_H_
-
+#ifndef NODE_h
+#define NODE_h
+#include <iostream>
 #include "Student.h"
-#include <cstring>
-
 using namespace std;
 
-class Node{
- private:
-  //student and next Node pointer
-  Student* student;
-  Node* next;
- public:
-  //constructors and destructor
-  Node();
-  Node(Student* s);
-  ~Node();
-  //getters and setters
-  Node* getNext();
-  Student* getStudent();
-  void setNext(Node* node);
+class Node {
+
+    public:
+        Node(Student* student); //create an instance of a Node
+        ~Node(); //destroy an instance of a Node
+        Student* getStudent(); //get the student stored in the Node
+        void setNext(Node* newnext); //set the next Node
+        Node* getNext(); //get the next Node
+
+    private:
+        Student* _student; //student
+        Node* next; //pointer to the next Node
 };
 #endif

@@ -14,7 +14,7 @@ This project allows you to add delete and print a student database
 using namespace std;
 
 //add function
-void add(Node* &head, char first[80], char last[80], int idVal, int gpaVal){
+void add(Node* &head, char first[80], char last[80], int idVal, float gpaVal){
   //if the head is null then new node is now the head
   if(head == NULL){
     Student* temp = new Student(first, last, idVal, gpaVal);
@@ -25,6 +25,20 @@ void add(Node* &head, char first[80], char last[80], int idVal, int gpaVal){
   if(head->getNext() == NULL){
     Student* temp = new Student(first, last, idVal, gpaVal);
     Node* a = new Node(temp);
+    if(head->getStudent()->getId() > idVal){
+      a->setNext(head);
+      head = a;
+    } else{
+      head->setNext(a);
+    }
+    return;
+  }
+  //if the next nodes id is greater than the one to add then insert 
+  if(head->getNext()->getStudent()->getId() > idVal){
+    Student* temp = new Student(first, last, idVal, gpaVal);
+    Node* a = new Node(temp);
+    //insert new node in between the current and next node
+    a->setNext(head->getNext());
     head->setNext(a);
     return;
   }
