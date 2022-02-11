@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Node.h"
 #include <fstream>
+#include <cstring>
 
 using namespace std;
 
