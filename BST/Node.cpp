@@ -5,6 +5,7 @@ This is the implementation for the Node class
  */
 #include "Node.h"
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 //constructors and destructors

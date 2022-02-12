@@ -35,7 +35,7 @@ int hashFunc(char firstName[80], char lastName[80], int id, float gpa, int sz){
 }
 
 //add function
-void add(Student* &head, char first[80], char last[80], int idVal, int gpaVal){
+void add(Student* &head, char first[80], char last[80], int idVal, float gpaVal){
   //if the head is null then new node is now the head
   if(head == NULL){
     head = new Student(first, last, idVal, gpaVal);
@@ -251,11 +251,8 @@ int main(){
     }
    
   }
-  //delete studentList
-  for(int i =0; i < hashSize; i++){
-    delete [] studentList[i];
-  }
-  delete [] studentList;
+
+  delete studentList;
   
   return 0;
 }
