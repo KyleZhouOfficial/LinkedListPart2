@@ -4,6 +4,85 @@
 
 using namespace std;
 
+const int RED = 1;
+const int BLACK  = 0;
+
+void fixTree(Node* curr, Node* root){
+  while(curr->parent->color == RED){
+    //if parent is left child of gp
+    if(curr->parent->parent->left == par){
+      //case 1 if both parent and uncle are red then flip and check grandparent
+      if(curr->parent->parent->right->color == RED){
+	curr->parent->parent->color = RED;
+	curr->parent->parent->right = BLACK:
+	curr->parent->parent->left = BLACK;
+	curr = curr->parent->parent;
+      }
+
+      //case 2
+      
+      else if(curr == curr->parent->right){
+	curr = curr->parent;
+	leftRot(curr);
+      }
+
+      //case 3
+      curr->parent->color = BLACK;
+      curr->parent->parent->color = RED;
+      rightRot(curr->parent);
+      
+    } else {
+      if(curr->parent->parent->left == RED){
+	curr->parent->parent->left->color  = BLACK;
+	curr->parent->parent->right->color  = BLACK;
+	curr->parent->parent->color = RED;
+
+	curr = curr->parent->parent;
+      } else if(curr == curr->parent->left){
+	curr = curr->parent;
+	rightRot(curr);
+
+	curr->parent->color = BLACK;
+	curr->parent->parent = BLACK;
+	leftRot(curr->parent->parent);
+      }
+      
+    }
+    root->color = BLACK;
+  }
+}
+
+
+void add(Node* &root, int val){
+  if(root == NULL){
+    root = new Node(NULL, NULL, NULL, val, BLACK);
+  } else{
+    Node* prev = root;
+    Node* temp = root;
+    while(temp != NULL){
+      prev = temp;
+      if(val > temp->key){
+	temp = temp->right;
+      } else {
+	temp = temp->left;
+      }
+    }
+
+    Node* n = new Node(prev, NULL, NULL, val, RED);
+
+    if(prev->key > val){
+      prev->right = n;
+    } else{
+      prev->left = n;
+    }
+
+    fixTree(Node* &par, Node* &curr);
+
+    
+    
+  }
+}
+
 int main(){
   Node* root = NULL;
 
@@ -13,7 +92,10 @@ int main(){
     cin >> input;
     
     if(strcmp(input, "ADD") == 0){
-
+      int val;
+      cout << "What number to add: " << endl;
+      cin >> val;
+      add(root, val);
     } else if(strcmp(input, "READ")){
 
     } else if(strcmp(input, "PRINT")){

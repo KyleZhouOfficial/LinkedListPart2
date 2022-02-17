@@ -1,3 +1,8 @@
+/*
+Kyle Zhou
+2/17/22
+Binary Search Tree program allows for insertion deletion and input from user/file
+*/
 #include <iostream>
 #include "Node.h"
 #include <fstream>
@@ -80,14 +85,12 @@ Node* deleteNode(Node* curr, int data){
 
     //case if both children are not NULL
     //get current node
-    Node* &t = curr;
     //set curr to minimum node in right subtree
-    Node* curr = new Node(min(curr->getRight())->getData());
+    Node* a = new Node(min(curr->getRight())->getData());
+    curr->setData(a->getData());
     //set the right to right subtree after deleting the minimum
-    curr->setRight(deleteMin(t->getRight()));
-    //set the left to original nodes left
-    curr->setLeft(t->getLeft());
-    delete t;
+    curr->setRight(deleteMin(curr->getRight()));
+   
   }
   return curr;
 }

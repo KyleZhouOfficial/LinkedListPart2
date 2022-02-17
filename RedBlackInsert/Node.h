@@ -12,5 +12,6 @@ class Node{
   int color;
 
   Node();
+  Node(Node* p, Node* l, Node* r, int k, int c);
   ~Node();
 }
