@@ -7,7 +7,29 @@ using namespace std;
 const int RED = 1;
 const int BLACK  = 0;
 
-void fixTree(Node* curr, Node* root){
+void rightRot(Node* & curr){
+
+}
+
+void leftRot(Node* & curr, Node* & root){
+  
+  Node* temp = curr->right;
+  curr->right = temp->left;
+
+  if(temp.left != NULL){
+    temp->left->parent = curr;
+  }
+   
+  temp->parent = curr->parent;
+
+  if(x->parent == NULL){
+    root=temp;
+  } else if(curr == curr->parent->left){
+    curr->parent->left = temp;
+  }
+}
+
+void fixTree(Node* &curr, Node* &root){
   while(curr->parent->color == RED){
     //if parent is left child of gp
     if(curr->parent->parent->left == par){
@@ -19,14 +41,14 @@ void fixTree(Node* curr, Node* root){
 	curr = curr->parent->parent;
       }
 
-      //case 2
-      
+      //case 2 parent is red uncle black 
       else if(curr == curr->parent->right){
 	curr = curr->parent;
 	leftRot(curr);
       }
 
-      //case 3
+      if(!curr->parent->color == RED) break;
+      //case 3 
       curr->parent->color = BLACK;
       curr->parent->parent->color = RED;
       rightRot(curr->parent);
@@ -43,13 +65,13 @@ void fixTree(Node* curr, Node* root){
 	rightRot(curr);
 
 	curr->parent->color = BLACK;
-	curr->parent->parent = BLACK;
+	curr->parent->parent->color = RED;
 	leftRot(curr->parent->parent);
       }
       
     }
-    root->color = BLACK;
   }
+   root->color = BLACK;
 }
 
 

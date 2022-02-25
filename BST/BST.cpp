@@ -84,8 +84,7 @@ Node* deleteNode(Node* curr, int data){
     if(curr->getLeft() == NULL) return curr->getRight();
 
     //case if both children are not NULL
-    //get current node
-    //set curr to minimum node in right subtree
+    //get  minimum node in right subtree
     Node* a = new Node(min(curr->getRight())->getData());
     curr->setData(a->getData());
     //set the right to right subtree after deleting the minimum
