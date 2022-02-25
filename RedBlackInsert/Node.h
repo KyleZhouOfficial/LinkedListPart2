@@ -14,4 +14,6 @@ class Node{
   Node();
   Node(Node* p, Node* l, Node* r, int k, int c);
   ~Node();
-}
+};
+
+#endif
