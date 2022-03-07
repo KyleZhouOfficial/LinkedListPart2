@@ -10,9 +10,10 @@ class Node{
   Node* right;
   int key;
   int color;
+  bool isLeaf;
 
-  Node();
-  Node(Node* p, Node* l, Node* r, int k, int c);
+  Node(Node* p);
+  Node(Node* p, Node* l, Node* r, int k, int c, bool le);
   ~Node();
 };
 

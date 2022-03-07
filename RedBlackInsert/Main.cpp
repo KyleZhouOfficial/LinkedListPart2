@@ -4,15 +4,17 @@
 
 using namespace std;
 
+
+
 const int RED = 1;
 const int BLACK  = 0;
 
-void rightRot(Node* & curr, Node* &root){
+void rightRot(Node* curr, Node* & root){
   
   Node* temp = curr->left;
   curr->left = temp->right;
 
-  if(temp->right != NULL){
+  if(temp->right->isLeaf != false){
     temp->right->parent = curr;
   }
    
@@ -30,12 +32,12 @@ void rightRot(Node* & curr, Node* &root){
   curr->parent = temp;
 }
 
-void leftRot(Node* & curr, Node* & root){
+void leftRot(Node* curr, Node* &root){
   
   Node* temp = curr->right;
   curr->right = temp->left;
 
-  if(temp->left != NULL){
+  if(temp->left->isLeaf != false){
     temp->left->parent = curr;
   }
    
@@ -53,60 +55,74 @@ void leftRot(Node* & curr, Node* & root){
   curr->parent = temp;
 }
 
-void fixTree(Node* &curr, Node* &root){
+void fixTree(Node* curr, Node* &root){
+  Node* uncle;
   while(curr->parent->color == RED){
     //if parent is left child of gp
-    if(curr->parent->parent->left == curr->parent){
+    if(curr->parent->parent->right == curr->parent){
+     uncle = curr->parent->parent->left;
       //case 1 if both parent and uncle are red then flip and check grandparent
-      if(curr->parent->parent->right->color == RED){
+      if(uncle != NULL && uncle->color == RED){
+	uncle->color = BLACK;
+	curr->parent->color = BLACK;
 	curr->parent->parent->color = RED;
-	curr->parent->parent->right->color = BLACK;
-	curr->parent->parent->left->color = BLACK;
 	curr = curr->parent->parent;
-      }
-
-      //case 2 parent is red uncle black 
-      else if(curr == curr->parent->right){
-	curr = curr->parent;
-	leftRot(curr, root);
-      }
-
-      if(curr->parent->color != RED) break;
-      //case 3 
-      curr->parent->color = BLACK;
-      curr->parent->parent->color = RED;
-      rightRot(curr->parent, root);
-      
-    } else {
-      if(curr->parent->parent->left->color == RED){
-	curr->parent->parent->left->color  = BLACK;
-	curr->parent->parent->right->color  = BLACK;
-	curr->parent->parent->color = RED;
-
-	curr = curr->parent->parent;
-      } else if(curr == curr->parent->left){
-	curr = curr->parent;
-	rightRot(curr, root);
-
+      } else{  //case 2 parent is red uncle black 
+	if(curr == curr->parent->left){
+	  curr = curr->parent;
+	  rightRot(curr, root);
+	}
 	curr->parent->color = BLACK;
 	curr->parent->parent->color = RED;
 	leftRot(curr->parent->parent, root);
+
       }
-      
+    } else{
+	uncle = curr->parent->parent->right;
+
+	if(uncle != NULL && uncle->color == RED){
+	  uncle->color = BLACK;
+	  curr->parent->color = BLACK;
+	  curr->parent->parent->color = RED;
+	  curr = curr->parent->parent;
+	} else{
+	  if(curr == curr->parent->right){
+	    curr = curr->parent;
+	    leftRot(curr, root);
+	  }
+	  curr->parent->color = BLACK;
+	  curr->parent->parent->color = RED;
+	  rightRot(curr->parent->parent, root);
+	}
     }
+  
+      if(curr == root){
+	break;
+      }
+    }
+    root->color = BLACK;
   }
-   root->color = BLACK;
-}
+
+     
+     
+
+    
 
 
 void add(Node* &root, int val){
+  Node* add = new Node(NULL, NULL, NULL, val, RED, false);
+  add->left = new Node(add);
+  add->right = new Node(add);
+  
   if(root == NULL){
-    root = new Node(NULL, NULL, NULL, val, BLACK);
+    add->color = BLACK;
+    root = add;
     return;
   } else{
-    Node* prev = root;
+    
+    Node* prev = NULL;
     Node* temp = root;
-    while(temp != NULL){
+    while(!temp->isLeaf){
       prev = temp;
       if(val > temp->key){
 	temp = temp->right;
@@ -115,18 +131,26 @@ void add(Node* &root, int val){
       }
 
     }
-
-    Node* n = new Node(prev, NULL, NULL, val, RED);
-
-    if(prev->key > val){
-      prev->right = n;
-    } else{
-      prev->left = n;
-    }
-
-    fixTree(prev, n);
+    add->parent = prev;
 
     
+    if(prev->key > val){
+      prev->left = add;
+    } else{
+      prev->right = add;
+    }
+
+    if(add->parent == NULL){
+      add->color = BLACK;
+      return;
+    }
+
+    if(add->parent->parent == NULL){
+      return;
+    }
+
+    fixTree(add, root);
+
     
   }
 }
@@ -134,7 +158,7 @@ void add(Node* &root, int val){
 //print 
 void print(Node* curr, int depth){
   //if at end of link then return
-  if(curr == NULL) return;
+  if(curr->isLeaf) return;
   //go right and increase depth
   print(curr->right, depth+1);
   //print out spaces equal to depth
