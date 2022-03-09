@@ -1,5 +1,6 @@
 #include <cstring>
 #include <iostream>
+#include <fstream>
 #include "Node.h"
 
 using namespace std;
@@ -164,7 +165,16 @@ void print(Node* curr, int depth){
   //print out spaces equal to depth
   for(int i = 0; i < depth; i++) cout << " ";
   //print out current node
-  cout << curr->key << endl;
+  cout << curr->key;
+  if(curr->color == BLACK){
+    cout << "B";
+  } else{
+    cout << "R";
+  }
+  if(curr->parent != NULL){
+    cout << curr->parent->key;
+  }
+  cout << endl;
   //go left 
   print(curr->left, depth+1);
 }
@@ -174,7 +184,7 @@ int main(){
 
   char input[10];
   while(true){
-    cout << "Enter ADD, READ, or PRINT" << endl;
+    cout << "Enter ADD, READ, QUIT, or PRINT" << endl;
     cin >> input;
     
     if(strcmp(input, "ADD") == 0){
@@ -183,8 +193,14 @@ int main(){
       cin >> val;
       add(root, val);
     } else if(strcmp(input, "READ")== 0){
-
+      ifstream myfile("num.txt");
+      int num;
+      while(myfile >> num){
+	add(root, num);
+      }
+      myfile.close();
     } else if(strcmp(input, "PRINT") == 0){
+      cout << "Each Node shows: Key, Color, and Parent" << endl;
       int depth = 0;
       print(root, depth);
     } else{
