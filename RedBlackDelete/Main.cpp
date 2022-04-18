@@ -1,6 +1,5 @@
 /*
 Red black tree with insertion, deletion, search, print, and read
-https://www.programiz.com/dsa/deletion-from-a-red-black-tree
 By: Kyle Zhou
 3/30/22
  */
@@ -12,10 +11,11 @@ By: Kyle Zhou
 
 using namespace std;
 
-
+//constants for red and black
 const int RED = 1;
 const int BLACK  = 0;
 
+//right rotate
 void rightRot(Node* curr, Node* & root){
   
   Node* temp = curr->left;
@@ -41,6 +41,7 @@ void rightRot(Node* curr, Node* & root){
   curr->parent = temp;
 }
 
+//left rotate
 void leftRot(Node* curr, Node* &root){
   
   Node* temp = curr->right;
@@ -125,8 +126,7 @@ void add(Node* &root, int val){
   //make children null nodes
   add->left = new Node(add);
   add->right = new Node(add);
-
- 
+  //if tree empty
   if(root == NULL){
     add->color = BLACK;
     root = add;
@@ -135,7 +135,7 @@ void add(Node* &root, int val){
     //find place to add
     Node* prev = NULL;
     Node* temp = root;
-    while(!temp->isLeaf){
+    while(temp != NULL && !temp->isLeaf){
       prev = temp;
       if(val > temp->key){
 	temp = temp->right;
@@ -144,15 +144,16 @@ void add(Node* &root, int val){
       }
 
     }
+    //assign parent to the previous node
     add->parent = prev;
 
-    
+    //add to left or right of previous node
     if(prev->key > val){
       prev->left = add;
     } else{
       prev->right = add;
     }
-
+    
     if(add->parent == NULL){
       add->color = BLACK;
       return;
@@ -161,7 +162,7 @@ void add(Node* &root, int val){
     if(add->parent->parent == NULL){
       return;
     }
-
+    //call fix
     fixTree(add, root);
 
     
@@ -234,18 +235,20 @@ void fixdouble(Node* &v, Node *&root){
       if(sib->right->color == BLACK && sib->left->color == BLACK){
 	sib->color = RED;
 	v = v->parent;
-      } else if(sib->right->color == BLACK){ //case 3
-	sib->left->color = BLACK;
-	sib->color = RED;
-	rightRot(sib, root);
-        sib = v->parent->right;
+      } else{
+	if(sib->right->color == BLACK){ //case 3
+	  sib->left->color = BLACK;
+	  sib->color = RED;
+	  rightRot(sib, root);
+	  sib = v->parent->right;
+	}
+	//case 4
+	sib->color = v->parent->color;
+	v->parent->color = BLACK;
+	sib->right->color = BLACK;
+	leftRot(v->parent, root);
+	v = root;
       }
-      //case 4
-      sib->color = v->parent->color;
-      v->parent->parent->color = BLACK;
-      sib->right->color = BLACK;
-      leftRot(v->parent, root);
-      v = root;
     } else{ //same cases just reversed
       sib = v->parent->left;
 
@@ -259,18 +262,20 @@ void fixdouble(Node* &v, Node *&root){
       if(sib->left->color == BLACK && sib->right->color == BLACK){
 	sib->color = RED;
         v = v->parent;
-      } else if(sib->left->color == BLACK){
-	sib->right->color = BLACK;
-	sib->color = RED;
-	leftRot(sib, root);
-        sib = v->parent->left;
-      }
+      } else{
+	if(sib->left->color == BLACK){
+	  sib->right->color = BLACK;
+	  sib->color = RED;
+	  leftRot(sib, root);
+	  sib = v->parent->left;
+	}
 
-      sib->color = v->parent->color;
-      v->parent->parent->color = BLACK;
-      sib->left->color = BLACK;
-      rightRot(v->parent, root);
-      v = root;
+	sib->color = v->parent->color;
+	v->parent->color = BLACK;
+	sib->left->color = BLACK;
+	rightRot(v->parent, root);
+	v = root;
+      }
     }
    
   }
@@ -296,6 +301,12 @@ bool searchTree(Node* root, int val){
 
 //delete
 void del(Node* &root, int val){
+  if(root == NULL) return;
+  if(root != NULL && root->left->isLeaf && root->right->isLeaf){
+    delete root;
+    root = NULL;
+    return;
+  }
   Node* temp = root;
   //find node to delete
   while(!temp->isLeaf){
