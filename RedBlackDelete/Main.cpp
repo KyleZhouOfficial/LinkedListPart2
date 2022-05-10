@@ -232,17 +232,18 @@ void fixdouble(Node* &v, Node *&root){
       }
 
       //case 2
-      if(sib->right->color == BLACK && sib->left->color == BLACK){
+      if(sib->right->color == BLACK && sib->left->color == BLACK){ //both children are black
+	//change color and recur
 	sib->color = RED;
 	v = v->parent;
       } else{
-	if(sib->right->color == BLACK){ //case 3
+	if(sib->right->color == BLACK){ //case 3 right left case
 	  sib->left->color = BLACK;
 	  sib->color = RED;
 	  rightRot(sib, root);
 	  sib = v->parent->right;
 	}
-	//case 4
+	//case 4 right right case
 	sib->color = v->parent->color;
 	v->parent->color = BLACK;
 	sib->right->color = BLACK;
