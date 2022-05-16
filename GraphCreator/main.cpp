@@ -1,3 +1,10 @@
+/*
+  By: Kyle Zhou
+  5/10/22
+  Graph creator that uses Dijkstra's algorithm to allow users to find the shortest path between two vertices. Allows to add nodes, remove nodes, add remove edges.
+  Source: https://www.youtube.com/watch?v=pVfj6mxhdMw&ab_channel=ComputerScience
+*/
+
 #include <iostream>
 #include <map>
 #include <cstring>
@@ -22,6 +29,21 @@ int findlabel(char* n, char nodes[21][21], int vert){
   return 0;
 }
 
+bool dfs(int curr, int e, bool* dfsvis, bool arr[21][21], int vertexNum){
+  if(curr == e) return true;
+  if(dfsvis[curr]) return false;
+  dfsvis[curr] = true;
+
+  for(int i = 0; i < vertexNum; i++){
+    if(!dfsvis[i] && arr[curr][i]){
+      dfs(i, e, dfsvis, arr, vertexNum);
+    }
+  }
+  
+  return false;
+}
+
+
 int main(){
   bool arr[21][21];
   int weights[21][21];
@@ -36,7 +58,7 @@ int main(){
   char input[20];
   int vertexNum = 0;
   while(true){
-    cout << "Enter addvertex, addedge, remvertex, remedge, shortpath" << endl;
+    cout << "Enter addvertex, addedge, remvertex, remedge, shortpath, or quit" << endl;
     cin >> input;
 
     if(strcmp(input, "addvertex") == 0){
@@ -44,15 +66,9 @@ int main(){
       char temp[20];
       cin >> nodes[vertexNum];
      
-       for(int i = 0; i < vertexNum; i++){
-	 cout << nodes[i] << strlen(nodes[i]) << endl;
-      }
       vertexNum = vertexNum+1;
      
     } else if(strcmp(input, "addedge") == 0){
-      for(int i = 0; i < vertexNum; i++){
-	cout << nodes[i] << endl;
-      }
       char t[20];
       char t1[20];
       int w = 0;
@@ -66,7 +82,31 @@ int main(){
       arr[findlabel(t, nodes, vertexNum)][findlabel(t1, nodes, vertexNum)] = true;
       weights[findlabel(t, nodes, vertexNum)][findlabel(t1, nodes, vertexNum)] = w;
     } else if(strcmp(input, "remvertex") == 0){
+      char t[20];
+      cout << "Enter Vertex To Delete" << endl;
+      cin >> t;
+      int curr = findlabel(t, nodes, vertexNum);
       
+      for(int i = 0; i < vertexNum; i++){
+	arr[curr][i] = false;
+	weights[curr][i] = 0;
+      }
+
+      for(int i = 0; i < vertexNum; i++){
+	arr[i][curr] = false;
+	weights[i][curr] = 0;
+      }
+
+    } else if(strcmp(input, "remedge")  == 0){
+      char t[20];
+      char t1[20];
+      cout << "Enter FIRST name" << endl;
+      cin >> t;
+      cout << "Enter SECOND name" << endl;
+      cin >> t1;
+
+      arr[findlabel(t, nodes, vertexNum)][findlabel(t1, nodes, vertexNum)] = false;
+      weights[findlabel(t, nodes, vertexNum)][findlabel(t1, nodes, vertexNum)] = 0;
 
     } else if(strcmp(input, "print") == 0){
 
@@ -77,7 +117,7 @@ int main(){
 	cout << endl;
       }
 
-       for(int i = 0; i < vertexNum; i++){
+      for(int i = 0; i < vertexNum; i++){
 	for(int j = 0; j < vertexNum; j++){
 	  cout << weights[i][j] << " ";
 	}
@@ -92,46 +132,63 @@ int main(){
       cin >> temp1;
 
       bool visited[vertexNum];
-       int dist[vertexNum];
-       int prev[vertexNum];
+      int dist[vertexNum];
+      int prev[vertexNum];
+      bool dfsvis[vertexNum];
        
       for(int i = 0; i < vertexNum; i++){
+	dfsvis[i] = false;
 	visited[i] = false;
 	dist[i] = 100000;
       }
 
-      dist[findlabel(temp, nodes, vertexNum)] = 0;
+      int s = findlabel(temp, nodes, vertexNum);
+      int e = findlabel(temp1, nodes, vertexNum);
+      if(!dfs(s, e, dfsvis, arr, vertexNum)){
+	cout << "Not Connected" << endl;
+      } else{
 
-      int curr = findlabel(temp, nodes, vertexNum);
-      dist[curr] = 0;
+	dist[findlabel(temp, nodes, vertexNum)] = 0;
+
+	int curr = findlabel(temp, nodes, vertexNum);
+	dist[curr] = 0;
  
-      while(unvis(visited, vertexNum)){
+	while(unvis(visited, vertexNum)){
 
-	for(int i = 0; i < vertexNum; i++){
-	  if(!visited[i] && arr[curr][i]){
-	    int a = weights[curr][i];
-	    a += dist[curr];
-	    if(a < dist[i]){
-	      dist[i] = a;
-	      prev[i] = curr;
+	  for(int i = 0; i < vertexNum; i++){
+	    if(!visited[i] && arr[curr][i]){
+	      int a = weights[curr][i];
+	      a += dist[curr];
+	      if(a < dist[i]){
+		dist[i] = a;
+		prev[i] = curr;
+	      }
 	    }
 	  }
-	}
-	visited[curr] = true;       
+	  visited[curr] = true;       
       
 
-	int m = 1000000;
-	int t = 0;
-	for(int i = 0; i < vertexNum; i++){
-	  if(dist[i] < m && arr[curr][i] && !visited[i]){
-	    m = dist[i];
-	    t = i;
+	  int m = 1000000;
+	  int t = 0;
+	  for(int i = 0; i < vertexNum; i++){
+	    if(dist[i] < m && arr[curr][i] && !visited[i]){
+	      m = dist[i];
+	      t = i;
+	    }
 	  }
+	  curr = t;
 	}
-	curr = t;
+	int x = findlabel(temp1, nodes, vertexNum);
+	cout << "PATH: ";
+	while(x != findlabel(temp, nodes, vertexNum)){
+	  cout << nodes[x] << " ";
+	  x = prev[x];
+	}
+	cout << nodes[x] << endl;
+	cout << "PATH LENGTH: " << dist[findlabel(temp1, nodes, vertexNum)] << endl;
       }
-      cout << dist[findlabel(temp1, nodes, vertexNum)] << endl;
-
+    } else if(strcmp(input, "quit") == 0){
+      break;
     }
 
   }
