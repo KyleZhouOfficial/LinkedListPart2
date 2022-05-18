@@ -32,18 +32,18 @@ int findlabel(char* n, char nodes[21][21], int vert){
 }
 
 //check if two nodes are connected
-bool dfs(int curr, int e, bool* dfsvis, bool arr[21][21], int vertexNum){
-  if(curr == e) return true;
-  if(dfsvis[curr]) return false;
+void dfs(int curr, int e, bool* dfsvis, bool arr[21][21], int vertexNum, bool& t){
+  if(curr == e) t = true;
+  if(dfsvis[curr]) return;
   dfsvis[curr] = true;
 
   for(int i = 0; i < vertexNum; i++){
     if(!dfsvis[i] && arr[curr][i]){
-      return dfs(i, e, dfsvis, arr, vertexNum);
+      dfs(i, e, dfsvis, arr, vertexNum, t);
     }
   }
   
-  return false;
+  return;
 }
 
 
@@ -84,7 +84,7 @@ int main(){
       cin >> t1;
       cout << "Enter WEIGHT" << endl;
       cin >> w;
-      cout << "here" << endl;
+     
       //sets connection to true and sets weight
       arr[findlabel(t, nodes, vertexNum)][findlabel(t1, nodes, vertexNum)] = true;
       weights[findlabel(t, nodes, vertexNum)][findlabel(t1, nodes, vertexNum)] = w;
@@ -155,7 +155,9 @@ int main(){
 
       int s = findlabel(temp, nodes, vertexNum);
       int e = findlabel(temp1, nodes, vertexNum);
-      if(!dfs(s, e, dfsvis, arr, vertexNum)){ //check if connected
+      bool y = false;
+	dfs(s, e, dfsvis, arr, vertexNum, y);
+       if(!y){ //check if connected
 	cout << "Not Connected" << endl;
       } else{
 	//set start distance to zero
@@ -167,7 +169,18 @@ int main(){
 	while(unvis(visited, vertexNum, dfsvis)){
 	  //update distances for all adjacent nodes
 	  for(int i = 0; i < vertexNum; i++){
-	    if(!visited[i] && arr[curr][i]){ //if not visited and is connected
+	    if(arr[i][curr]){ //if not visited and is connected
+	      int a = weights[i][curr];
+	      a += dist[i];
+	      if(a < dist[curr]){ //if is shortest distance
+		dist[curr] = a;
+		prev[curr] = i;//set previous node for later use
+	      }
+	    }
+	  }
+
+	   for(int i = 0; i < vertexNum; i++){
+	    if(arr[curr][i]){ //if not visited and is connected
 	      int a = weights[curr][i];
 	      a += dist[curr];
 	      if(a < dist[i]){ //if is shortest distance
