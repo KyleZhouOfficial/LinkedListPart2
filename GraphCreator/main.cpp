@@ -13,9 +13,9 @@
 using namespace std;
 
 //checks if all vertices are visited
-bool unvis(bool* arr, int cnt){
+bool unvis(bool* arr, int cnt, bool* v){
   for(int i = 0; i < cnt; i++){
-    if(arr[i] == false) return true;
+    if(arr[i] != v[i]) return true;
   }
   return false;
 }
@@ -39,7 +39,7 @@ bool dfs(int curr, int e, bool* dfsvis, bool arr[21][21], int vertexNum){
 
   for(int i = 0; i < vertexNum; i++){
     if(!dfsvis[i] && arr[curr][i]){
-      dfs(i, e, dfsvis, arr, vertexNum);
+      return dfs(i, e, dfsvis, arr, vertexNum);
     }
   }
   
@@ -164,7 +164,7 @@ int main(){
 	int curr = findlabel(temp, nodes, vertexNum);
 	dist[curr] = 0;
  
-	while(unvis(visited, vertexNum)){
+	while(unvis(visited, vertexNum, dfsvis)){
 	  //update distances for all adjacent nodes
 	  for(int i = 0; i < vertexNum; i++){
 	    if(!visited[i] && arr[curr][i]){ //if not visited and is connected
